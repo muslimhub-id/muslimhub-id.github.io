@@ -1,0 +1,8 @@
+{
+  "name": "muslim-hub",
+  "version": "1.0.0",
+  "description": "Website jadwal shalat, doa, dan kisah rasul",
+  "scripts": {
+    "start": "npx serve -n"
+  }
+}

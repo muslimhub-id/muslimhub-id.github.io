@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta name="google" content="notranslate">
+<title>Admin Muslim Hub</title>
+<style>
+:root{--teal:#0E5A44;--brass:#C99A2E;--bg:#F4F6F2;--card:#fff;--ink:#16231F;--mut:#5E6F68;--line:#DEE5E0}
+@media (prefers-color-scheme:dark){:root{--bg:#0A1411;--card:#111E19;--ink:#E7F0EB;--mut:#8DA59B;--line:#1F322A}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,sans-serif;line-height:1.5}
+main{max-width:520px;margin:auto;padding:18px 14px 40px}
+h1{font-size:20px;margin:6px 0 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:12px}
+input{width:100%;padding:12px;margin-bottom:10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit}
+button{border:0;background:var(--teal);color:#fff;padding:12px 18px;border-radius:10px;font:600 15px inherit;cursor:pointer}
+.out{background:var(--card);color:var(--ink);border:1px solid var(--line)}
+.hero{background:var(--teal);color:#fff;border-radius:20px;padding:22px;text-align:center;margin-bottom:12px}
+#on{font-size:68px;font-weight:700;color:#E0B04A;line-height:1.1}
+.bars{display:flex;gap:8px;align-items:flex-end;margin-top:10px}
+.b{flex:1;text-align:center;font-size:12px;color:var(--mut)}
+.b div{background:var(--teal);border-radius:6px 6px 0 0}
+#err{color:#c0392b;font-size:14px;min-height:20px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+  <h1>Admin Muslim Hub</h1>
+  <div id="login" class="card">
+    <input id="em" type="email" placeholder="Email admin" autocomplete="username">
+    <input id="pw" type="password" placeholder="Kata sandi" autocomplete="current-password">
+    <button id="masuk">Masuk</button>
+  </div>
+  <p id="err"></p>
+  <div id="dash" hidden>
+    <div class="hero"><div>Sedang online</div><div id="on">0</div><small>pengunjung aktif sekarang</small></div>
+    <div class="card">Pengunjung unik hari ini: <b id="hari">0</b></div>
+    <div class="card"><b>7 hari terakhir</b><div class="bars" id="bar"></div></div>
+    <button class="out" id="keluar">Keluar</button>
+  </div>
+</main>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+const $=i=>document.getElementById(i);
+const c=window.FIREBASE_CONFIG;
+if(!c||!window.firebase||String(c.apiKey).indexOf("ISI_")===0){
+  $("err").textContent="Isi dulu firebase-config.js dengan data dari Firebase.";
+}else{
+  firebase.initializeApp(c);
+  const auth=firebase.auth(),db=firebase.database();
+  let offs=[];
+  $("masuk").onclick=()=>{
+    $("err").textContent="";
+    auth.signInWithEmailAndPassword($("em").value.trim(),$("pw").value).catch(()=>{$("err").textContent="Gagal masuk. Periksa email dan kata sandi.";});
+  };
+  $("keluar").onclick=()=>auth.signOut();
+  auth.onAuthStateChanged(u=>{
+    $("login").hidden=!!u;$("dash").hidden=!u;
+    offs.forEach(f=>f());offs=[];
+    if(!u)return;
+    const p=db.ref("presence");
+    const f1=s=>{$("on").textContent=s.numChildren();};
+    p.on("value",f1,()=>{$("err").textContent="Tidak punya akses. Cek email admin di aturan database.";});
+    offs.push(()=>p.off("value",f1));
+    const days=[6,5,4,3,2,1,0].map(k=>new Date(Date.now()-k*864e5).toLocaleDateString("sv-SE"));
+    const vals={};
+    const draw=()=>{
+      $("hari").textContent=vals[days[6]]||0;
+      const max=Math.max(1,...days.map(d=>vals[d]||0));
+      $("bar").innerHTML=days.map(d=>`<div class="b"><div style="height:${Math.max(4,(vals[d]||0)/max*80)}px"></div>${d.slice(5)}<br><b>${vals[d]||0}</b></div>`).join("");
+    };
+    days.forEach(d=>{
+      const r=db.ref("uniq/"+d);
+      const f=s=>{vals[d]=s.numChildren();draw();};
+      r.on("value",f);offs.push(()=>r.off("value",f));
+    });
+    draw();
+  });
+}
+</script>
+</body>
+</html>

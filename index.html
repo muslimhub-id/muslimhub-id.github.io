@@ -1,14 +1,11 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" translate="no">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0B4F4A">
+<meta name="google" content="notranslate">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
 <title>Muslim Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Scheherazade+New:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -157,11 +154,6 @@ main{max-width:640px;padding:16px 14px 110px}
     </div>
     <button class="lokasi" id="btnLok">Gunakan lokasi saya</button>
     <div class="card" id="jadwal">Memuat jadwal...</div>
-    <div class="card" id="nfCard"><b>Pengingat shalat</b>
-      <div class="aksi" style="flex-wrap:wrap;align-items:center"><button id="nfTog">Pengingat: Mati</button>
-        <select id="nfLead" aria-label="Waktu pengingat" style="padding:7px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--ink)"><option value="0">Tepat waktu</option><option value="5">5 menit sebelum</option><option value="10">10 menit sebelum</option><option value="15">15 menit sebelum</option></select>
-        <button id="nfTest">Coba</button></div>
-      <p class="info" id="nfStat" style="text-align:left;padding:8px 0 0"></p></div>
     <div class="info">Jadwal diambil dari aladhan.com (metode Kemenag RI). Perlu internet.</div>
   </section>
 
@@ -180,14 +172,13 @@ main{max-width:640px;padding:16px 14px 110px}
     <div id="qList">
       <div class="cari"><input id="qCari" placeholder="Cari surat, mis. Yasin atau 36"></div>
       <div id="qLanjut"></div>
-      <div class="card" id="qOff"><b>Baca tanpa internet</b><p class="info" style="text-align:left;padding:4px 0 8px">Surat yang pernah dibuka otomatis tersimpan. Unduh semuanya sekali saat ada internet (audio tetap perlu internet).</p><button class="btn" style="padding:10px 16px" id="qUnduh">Unduh semua 114 surat</button><div id="qProg" class="info" style="text-align:left;padding:8px 0 0"></div></div>
       <div id="qSurat"></div>
     </div>
     <div id="qBaca" hidden></div>
     <div id="listSurat" hidden></div>
   </section>
 
-  <section id="m"><div class="grid" id="menuGrid"></div><div class="info" style="margin-top:12px">Di iPhone: ketuk Bagikan, lalu Tambah ke Layar Utama untuk memasang aplikasi.</div></section>
+  <section id="m"><div class="grid" id="menuGrid"></div><div class="info" style="margin-top:14px">Muslim Hub menghitung jumlah pengunjung secara anonim, tanpa menyimpan data pribadi.</div></section>
 
   <section id="t">
     <div class="card" style="text-align:center">
@@ -235,19 +226,7 @@ const DOA=[
 {j:"Keluar rumah",a:"بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ",t:"Dengan nama Allah, aku bertawakal kepada-Nya. Tiada daya dan kekuatan kecuali dari Allah."},
 {j:"Naik kendaraan",a:"سُبْحَانَ الَّذِي سَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ وَإِنَّا إِلَى رَبِّنَا لَمُنْقَلِبُونَ",t:"Maha Suci Allah yang menundukkan kendaraan ini untuk kami, padahal kami tidak mampu menguasainya, dan sungguh kepada Tuhan kami kami akan kembali."},
 {j:"Untuk orang tua",a:"رَبِّ اغْفِرْ لِي وَلِوَالِدَيَّ وَارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا",t:"Ya Tuhanku, ampunilah aku dan kedua orang tuaku, sayangilah mereka sebagaimana mereka mendidikku waktu kecil."},
-{j:"Doa sapu jagat",a:"رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",t:"Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat, dan lindungi kami dari siksa neraka."},
-{k:"Masjid",j:"Masuk masjid",a:"اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ",l:"Allahummaftah li abwaba rahmatik.",t:"Ya Allah, bukakanlah untukku pintu-pintu rahmat-Mu."},
-{k:"Masjid",j:"Keluar masjid",a:"اللَّهُمَّ إِنِّي أَسْأَلُكَ مِنْ فَضْلِكَ",l:"Allahumma inni as'aluka min fadhlik.",t:"Ya Allah, sungguh aku memohon karunia-Mu."},
-{k:"Rumah",j:"Masuk rumah",a:"بِسْمِ اللَّهِ وَلَجْنَا وَبِسْمِ اللَّهِ خَرَجْنَا وَعَلَى رَبِّنَا تَوَكَّلْنَا",l:"Bismillahi walajna, wa bismillahi kharajna, wa 'ala rabbina tawakkalna.",t:"Dengan nama Allah kami masuk, dengan nama Allah kami keluar, dan kepada Tuhan kami, kami bertawakal."},
-{k:"Harian",j:"Keluar kamar mandi",a:"غُفْرَانَكَ",l:"Ghufranaka.",t:"Aku memohon ampunan-Mu."},
-{k:"Harian",j:"Memakai pakaian",a:"الْحَمْدُ لِلَّهِ الَّذِي كَسَانِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ",l:"Alhamdulillahilladzi kasani hadza wa razaqanihi min ghairi haulin minni wa la quwwah.",t:"Segala puji bagi Allah yang memberiku pakaian ini dan merezekikannya tanpa daya dan kekuatan dariku."},
-{k:"Harian",j:"Bercermin",a:"اللَّهُمَّ أَنْتَ حَسَّنْتَ خَلْقِي فَحَسِّنْ خُلُقِي",l:"Allahumma anta hassanta khalqi fahassin khuluqi.",t:"Ya Allah, Engkau telah memperbagus rupaku, maka perbaguslah akhlakku."},
-{k:"Harian",j:"Setelah bersin",a:"الْحَمْدُ لِلَّهِ",l:"Alhamdulillah.",t:"Segala puji bagi Allah."},
-{k:"Harian",j:"Saat turun hujan",a:"اللَّهُمَّ صَيِّبًا نَافِعًا",l:"Allahumma shayyiban nafi'a.",t:"Ya Allah, turunkanlah hujan yang bermanfaat."},
-{k:"Ilmu",j:"Memohon tambahan ilmu",a:"رَبِّ زِدْنِي عِلْمًا",l:"Rabbi zidni 'ilma.",t:"Ya Tuhanku, tambahkanlah ilmu kepadaku."},
-{k:"Ilmu",j:"Memohon kelapangan dan kemudahan",a:"رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي",l:"Rabbisyrah li shadri wa yassir li amri.",t:"Ya Tuhanku, lapangkanlah dadaku dan mudahkanlah urusanku."},
-{k:"Keluarga",j:"Untuk pasangan dan anak",a:"رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا",l:"Rabbana hab lana min azwajina wa dzurriyyatina qurrata a'yunin waj'alna lilmuttaqina imama.",t:"Ya Tuhan kami, anugerahkanlah kepada kami pasangan dan keturunan yang menyejukkan hati, dan jadikanlah kami pemimpin bagi orang-orang yang bertakwa."},
-{k:"Umum",j:"Saat sedih dan cemas",a:"اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ",l:"Allahumma inni a'udzu bika minal hammi wal hazan.",t:"Ya Allah, aku berlindung kepada-Mu dari kegelisahan dan kesedihan."}
+{j:"Doa sapu jagat",a:"رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",t:"Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat, dan lindungi kami dari siksa neraka."}
 ];
 
 const RASUL=[
@@ -341,7 +320,6 @@ function hitung(){
   document.getElementById("hNama").textContent=nm;
   document.getElementById("hHitung").textContent=p(Math.floor(s/3600))+":"+p(Math.floor(s%3600/60))+":"+p(s%60);
   tampilJadwal(nm);
-  nfCek();
 }
 
 function simpanPilihan(v){try{localStorage.setItem("mh_kota",v);}catch(e){}}
@@ -392,7 +370,7 @@ setInterval(hitung,1000);
 /* ===== Tambahan: latin, hijriah, surat, tasbih, kiblat, hari penting, kuis, PWA ===== */
 const LAT=["Alhamdulillahilladzi ahyana ba'da ma amatana wa ilaihin nusyur.","Bismika Allahumma ahya wa bismika amut.","Allahumma barik lana fima razaqtana wa qina 'adzaban nar.","Alhamdulillahilladzi ath'amana wa saqana wa ja'alana muslimin.","Allahumma inni a'udzu bika minal khubutsi wal khaba'its.","Bismillahi tawakkaltu 'alallah, la haula wa la quwwata illa billah.","Subhanalladzi sakhkhara lana hadza wa ma kunna lahu muqrinin, wa inna ila rabbina lamunqalibun.","Rabbighfirli wa liwalidayya warhamhuma kama rabbayani shaghira.","Rabbana atina fid dunya hasanah wa fil akhirati hasanah wa qina 'adzaban nar."];
 const KAT=["Harian","Harian","Harian","Harian","Harian","Bepergian","Bepergian","Keluarga","Umum"];
-DOA.forEach((x,i)=>{x.l=x.l||LAT[i];x.k=x.k||KAT[i];});
+DOA.forEach((x,i)=>{x.l=LAT[i];x.k=KAT[i];});
 tampilDoa();
 
 const BLN=["Muharram","Safar","Rabiul Awal","Rabiul Akhir","Jumadil Awal","Jumadil Akhir","Rajab","Syaban","Ramadhan","Syawal","Dzulkaidah","Dzulhijjah"];
@@ -477,7 +455,7 @@ const HP=[[1,1,"Tahun Baru Islam (1 Muharram)"],[10,1,"Asyura (10 Muharram)"],[1
   }catch(e){document.getElementById("hari").innerHTML='<div class="info">Browser ini belum mendukung kalender Hijriah.</div>';}
 })();
 
-const KUIS=[["Nabi yang selamat dari api?",["Ibrahim","Musa","Nuh"]],["Nabi yang membuat bahtera?",["Nuh","Musa","Yunus"]],["Nabi yang ditelan ikan besar?",["Yunus","Ayyub","Harun"]],["Nabi yang diberi kitab Zabur?",["Daud","Isa","Sulaiman"]],["Nabi yang memahami bahasa burung?",["Sulaiman","Yusuf","Yahya"]],["Nabi yang dibuang saudaranya ke dalam sumur?",["Yusuf","Yaqub","Ismail"]],["Nabi yang lahir tanpa seorang ayah?",["Isa","Yahya","Zakaria"]],["Manusia pertama sekaligus nabi pertama?",["Adam","Idris","Nuh"]],["Nabi yang mukjizatnya seekor unta betina?",["Shalih","Hud","Luth"]],["Nabi yang terkenal sabar saat diuji sakit?",["Ayyub","Yunus","Zakaria"]],["Nabi yang meninggikan fondasi Ka'bah bersama putranya?",["Ibrahim","Nuh","Harun"]],["Nabi yang mengalahkan Jalut?",["Daud","Sulaiman","Musa"]],["Nabi yang dibesarkan di istana Firaun?",["Musa","Harun","Yusuf"]],["Nabi yang diutus kepada penduduk Madyan?",["Syuaib","Hud","Luth"]],["Nabi yang menjadi saudara dan pendamping Musa?",["Harun","Ilyas","Yaqub"]],["Rasul terakhir?",["Muhammad","Isa","Musa"]],["Nabi yang berdoa memohon keturunan lalu dikaruniai Yahya?",["Zakaria","Ibrahim","Ayyub"]]];
+const KUIS=[["Nabi yang selamat dari api?",["Ibrahim","Musa","Nuh"]],["Nabi yang membuat bahtera?",["Nuh","Musa","Yunus"]],["Nabi yang ditelan ikan besar?",["Yunus","Ayyub","Harun"]],["Nabi yang diberi kitab Zabur?",["Daud","Isa","Sulaiman"]],["Nabi yang memahami bahasa burung?",["Sulaiman","Yusuf","Yahya"]],["Nabi yang dibuang saudaranya ke dalam sumur?",["Yusuf","Yaqub","Ismail"]],["Nabi yang lahir tanpa seorang ayah?",["Isa","Yahya","Zakaria"]]];
 let qi=0,skor=0;
 function kuis(){
   const k=document.getElementById("kuis");
@@ -523,9 +501,6 @@ const DZ_UMUM=[
 {j:"Perlindungan dari bahaya",a:"بِسْمِ اللَّهِ الَّذِي لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ وَهُوَ السَّمِيعُ الْعَلِيمُ",t:"Dengan nama Allah yang bersama nama-Nya tidak ada sesuatu pun di bumi dan di langit yang membahayakan, dan Dia Maha Mendengar, Maha Mengetahui.",n:3},
 {j:"Tasbih",a:"سُبْحَانَ اللَّهِ وَبِحَمْدِهِ",t:"Maha Suci Allah dan segala puji bagi-Nya.",n:100},
 {j:"Istighfar",a:"أَسْتَغْفِرُ اللَّهَ وَأَتُوبُ إِلَيْهِ",t:"Aku memohon ampun kepada Allah dan bertobat kepada-Nya.",n:100},
-{j:"Hasbiyallah",a:"حَسْبِيَ اللَّهُ لَا إِلَهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ",t:"Cukuplah Allah bagiku, tiada tuhan selain Dia. Kepada-Nya aku bertawakal, dan Dia Tuhan pemilik Arsy yang agung.",n:7},
-{j:"Tahlil",a:"لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ",t:"Tiada tuhan selain Allah semata, tiada sekutu bagi-Nya. Milik-Nya kerajaan dan segala puji, dan Dia Maha Kuasa atas segala sesuatu.",n:10},
-{j:"Shalawat",a:"اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ",t:"Ya Allah, limpahkanlah shalawat dan salam kepada Nabi kami Muhammad.",n:10},
 {j:"Al-Ikhlas, Al-Falaq, An-Nas",a:"",t:"Dibaca masing-masing tiga kali. Teksnya ada di tab Quran.",n:3}];
 const DZ_SHALAT=[
 {j:"Istighfar",a:"أَسْتَغْفِرُ اللَّهَ",t:"Aku memohon ampun kepada Allah.",n:3},
@@ -684,84 +659,11 @@ function buka(t){
 document.getElementById("menuGrid").onclick=e=>{const b=e.target.closest("[data-go]");if(b)buka(b.dataset.go);};
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>buka(b.dataset.t));
 
-/* ===== Pengingat shalat ===== */
-let NF={on:false,lead:0};try{NF=Object.assign(NF,JSON.parse(localStorage.getItem("mh_nf")||"{}"));}catch(e){}
-const nfSimpan=()=>{try{localStorage.setItem("mh_nf",JSON.stringify(NF));}catch(e){}};
-const nfAda="Notification" in window,nfSent=new Set();
-function nfUI(msg){
-  const t=document.getElementById("nfTog");
-  t.textContent=NF.on?"Pengingat: Aktif":"Pengingat: Mati";t.classList.toggle("on",NF.on);
-  document.getElementById("nfLead").value=String(NF.lead);
-  document.getElementById("nfStat").textContent=msg||(!nfAda?"Browser ini belum mendukung notifikasi. Di iPhone, pasang aplikasi ke Layar Utama dulu.":NF.on?"Pengingat berbunyi selama Muslim Hub terbuka atau masih berjalan di latar belakang. Jika aplikasi ditutup penuh, pengingat tidak muncul.":"Aktifkan agar diingatkan saat waktu shalat tiba.");
-}
-function bunyi(){
-  try{const c=new(window.AudioContext||window.webkitAudioContext)();
-    [523,659,784].forEach((f,i)=>{const s=c.currentTime+i*.35,o=c.createOscillator(),g=c.createGain();o.frequency.value=f;
-      g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(.25,s+.05);g.gain.exponentialRampToValueAtTime(.0001,s+.6);
-      o.connect(g);g.connect(c.destination);o.start(s);o.stop(s+.65);});}catch(e){}
-}
-async function nfKirim(t,b){
-  const o={body:b,icon:"icon-192.png",badge:"icon-192.png",tag:"mh-shalat",vibrate:[200,100,200]};
-  try{const reg=await navigator.serviceWorker.getRegistration();if(reg)await reg.showNotification(t,o);else new Notification(t,o);}
-  catch(e){try{new Notification(t,{body:b});}catch(_){}}
-  bunyi();
-}
-function nfCek(){
-  if(!NF.on||!waktu||!nfAda||Notification.permission!=="granted")return;
-  const now=Date.now();
-  for(const [k,n] of URUT){
-    const jam=waktu[k].split(" ")[0],[h,m]=jam.split(":");const d=new Date();d.setHours(+h,+m,0,0);
-    const diff=now-(d.getTime()-NF.lead*60000),key=kunci(new Date())+n+NF.lead;
-    if(diff>=0&&diff<120000&&!nfSent.has(key)){nfSent.add(key);
-      nfKirim("Shalat "+n,NF.lead?n+" dalam "+NF.lead+" menit ("+jam+")":"Waktu "+n+" telah tiba ("+jam+")");}
-  }
-}
-document.getElementById("nfTog").onclick=async()=>{
-  if(NF.on){NF.on=false;nfSimpan();nfUI();return;}
-  if(!nfAda){nfUI();return;}
-  let p=Notification.permission;
-  if(p==="default"){try{p=await Notification.requestPermission();}catch(e){}}
-  if(p!=="granted"){NF.on=false;nfSimpan();nfUI("Izin notifikasi belum diberikan. Izinkan lewat pengaturan situs di browser, lalu coba lagi.");return;}
-  NF.on=true;nfSimpan();nfUI();
-};
-document.getElementById("nfLead").onchange=e=>{NF.lead=+e.target.value;nfSimpan();};
-document.getElementById("nfTest").onclick=async()=>{
-  if(!nfAda){nfUI();return;}
-  let p=Notification.permission;
-  if(p==="default"){try{p=await Notification.requestPermission();}catch(e){}}
-  if(p!=="granted"){nfUI("Izin notifikasi belum diberikan.");return;}
-  nfKirim("Muslim Hub","Pengingat shalat berfungsi.");
-};
-nfUI();
-
-/* ===== Unduh Quran untuk offline ===== */
-(function(){
-  const p=document.getElementById("qProg");
-  try{if(localStorage.getItem("mh_qoff")==="1")p.textContent="Semua surat sudah tersimpan untuk dibaca offline.";}catch(e){}
-  document.getElementById("qUnduh").onclick=async e=>{
-    const b=e.target;b.disabled=true;let ok=0,gagal=0,i=0;
-    async function w(){while(i<114){const n=++i;
-      try{await jget(API+"surah/"+n+"/editions/quran-uthmani,id.indonesian");ok++;}catch(_){gagal++;}
-      p.textContent="Mengunduh... "+(ok+gagal)+" dari 114";}}
-    await Promise.all([w(),w(),w()]);
-    p.textContent=gagal?ok+" surat tersimpan, "+gagal+" gagal. Periksa internet lalu coba lagi.":"Selesai. Semua surat bisa dibaca tanpa internet.";
-    try{localStorage.setItem("mh_qoff",gagal?"":"1");}catch(_){}
-    b.disabled=false;
-  };
-})();
-
-/* ===== Tombol pasang aplikasi ===== */
-let dip=null;
-addEventListener("beforeinstallprompt",e=>{
-  e.preventDefault();dip=e;
-  if(document.getElementById("pasang"))return;
-  const b=document.createElement("button");b.className="tile";b.id="pasang";b.innerHTML="<span>⬇️</span>Pasang aplikasi";
-  b.onclick=async()=>{if(!dip)return;dip.prompt();try{await dip.userChoice;}catch(_){}dip=null;b.remove();};
-  document.getElementById("menuGrid").appendChild(b);
-});
-addEventListener("appinstalled",()=>{const b=document.getElementById("pasang");if(b)b.remove();});
-
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script defer src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script defer src="firebase-config.js"></script>
+<script defer src="presence.js"></script>
 </body>
 </html>
