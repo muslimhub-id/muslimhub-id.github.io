@@ -123,6 +123,10 @@ main{max-width:640px;padding:16px 14px 110px}
 #mini button{border:0;background:#ffffff26;color:#fff;border-radius:10px;width:38px;height:36px;font-size:16px;cursor:pointer}
 .bismi.main{background:color-mix(in srgb,var(--brass) 20%,var(--paper))}
 .nw{white-space:nowrap}
+.zf label{display:block;font-size:14px;color:var(--mut);margin-bottom:12px}
+.zf input[type=number]{width:100%;margin-top:4px;color:var(--ink)}
+.zf label.cek{display:flex;gap:10px;align-items:center;color:var(--ink)}
+.zf small{display:block;margin-top:4px}
 </style>
 </head>
 <body>
@@ -212,6 +216,28 @@ main{max-width:640px;padding:16px 14px 110px}
   <section id="r">
     <div class="card"><b>Ibadah hari ini</b><div id="ibToday"></div></div>
     <div class="card"><b>7 hari terakhir</b><div id="ibWeek" style="display:flex;gap:8px;align-items:flex-end;margin-top:10px"></div></div>
+  </section>
+<section id="y">
+    <div class="aksi" id="zTab" style="margin-bottom:12px"><button class="on" data-m="mal">Zakat mal</button><button data-m="gaji">Penghasilan</button><button data-m="fitrah">Fitrah</button></div>
+    <div class="card">
+      <div class="zf" data-m="mal">
+        <label>Harga emas 24 karat per gram (Rp)<input id="zEmas" type="number" inputmode="numeric" placeholder="Cek harga emas hari ini"></label>
+        <label>Total harta tersimpan: tabungan, emas, deposito, dll (Rp)<input id="zHarta" type="number" inputmode="numeric" placeholder="0"></label>
+        <label>Utang yang jatuh tempo (Rp)<input id="zUtang" type="number" inputmode="numeric" placeholder="0"></label>
+        <label class="cek"><input type="checkbox" id="zHaul"> Harta sudah dimiliki penuh satu tahun (haul)</label>
+      </div>
+      <div class="zf" data-m="gaji" hidden>
+        <label>Penghasilan per bulan (Rp)<input id="zGaji" type="number" inputmode="numeric" placeholder="0"></label>
+        <label>Penghasilan tambahan per bulan: bonus, usaha, dll (Rp)<input id="zLain" type="number" inputmode="numeric" placeholder="0"></label>
+        <label>Nisab per bulan (Rp)<input id="zNisabG" type="number" inputmode="numeric" value="7640144"><small>Penetapan BAZNAS 2026: 85 gram emas per tahun, dibagi 12. Ubah jika BAZNAS menetapkan angka baru.</small></label>
+      </div>
+      <div class="zf" data-m="fitrah" hidden>
+        <label>Jumlah jiwa yang dizakati<input id="zJiwa" type="number" inputmode="numeric" placeholder="0"></label>
+        <label>Harga beras per kg yang kamu konsumsi (Rp)<input id="zBeras" type="number" inputmode="numeric" placeholder="0"></label>
+      </div>
+    </div>
+    <div class="card" id="zHasil"></div>
+    <div class="info">Perhitungan ini hanya perkiraan berdasarkan ketentuan umum BAZNAS (nisab 85 gram emas, kadar 2,5%, fitrah 2,5 kg beras per jiwa). Ada perbedaan pendapat ulama dan lembaga. Untuk kepastian, tanyakan ke BAZNAS atau ustaz/amil terpercaya.</div>
   </section>
 </main>
 
@@ -649,7 +675,7 @@ document.getElementById("qLanjut").onclick=e=>{const b=e.target.closest(".srt");
 document.getElementById("qCari").oninput=e=>qDaftar(e.target.value);
 qMuat();
 
-document.getElementById("menuGrid").innerHTML=[["p","🧎","Panduan shalat"],["k","📜","Kisah rasul"],["r","✅","Ibadah harian"],["t","📿","Tasbih"],["q","🧭","Kiblat"],["h","📅","Hari penting"],["z","❓","Kuis"]].map(([t,i,n])=>`<button class="tile" data-go="${t}"><span>${i}</span>${n}</button>`).join("");
+document.getElementById("menuGrid").innerHTML=[["p","🧎","Panduan shalat"],["k","📜","Kisah rasul"],["r","✅","Ibadah harian"],["t","📿","Tasbih"],["q","🧭","Kiblat"],["h","📅","Hari penting"],["y","🧮","Kalkulator zakat"],["z","❓","Kuis"]].map(([t,i,n])=>`<button class="tile" data-go="${t}"><span>${i}</span>${n}</button>`).join("");
 function buka(t){
   document.querySelectorAll("section").forEach(e=>e.classList.toggle("on",e.id===t));
   const nb=document.querySelector('nav button[data-t="'+t+'"]')||document.querySelector('nav button[data-t="m"]');
@@ -658,6 +684,50 @@ function buka(t){
 }
 document.getElementById("menuGrid").onclick=e=>{const b=e.target.closest("[data-go]");if(b)buka(b.dataset.go);};
 document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>buka(b.dataset.t));
+
+/* ===== Kalkulator zakat ===== */
+const zRp=n=>"Rp "+Math.round(n).toLocaleString("id-ID");
+const zNv=i=>Math.max(0,parseFloat(document.getElementById(i).value)||0);
+let zm="mal";
+try{const e=localStorage.getItem("mh_emas");if(e&&+e)document.getElementById("zEmas").value=e;}catch(e){}
+function hitungZakat(){
+  const box=document.getElementById("zHasil");
+  document.querySelectorAll(".zf").forEach(e=>{e.hidden=e.dataset.m!==zm;});
+  const baris=(a,b)=>`<div class="row"><span>${a}</span><b>${b}</b></div>`;
+  const hasil=(j,v,c)=>`<div style="font-size:14px;color:var(--mut);margin-top:10px">${j}</div><div style="font-size:30px;font-weight:700;color:var(--teal2)">${v}</div><p class="info" style="text-align:left;padding:6px 0 0">${c}</p>`;
+  let h="";
+  if(zm==="mal"){
+    const emas=zNv("zEmas");
+    try{localStorage.setItem("mh_emas",emas);}catch(e){}
+    if(!emas){box.innerHTML='<div class="info">Isi harga emas per gram untuk mulai menghitung.</div>';return;}
+    const nisab=85*emas,net=Math.max(0,zNv("zHarta")-zNv("zUtang")),haul=document.getElementById("zHaul").checked;
+    h=baris("Nisab (85 gram emas)",zRp(nisab))+baris("Harta bersih",zRp(net));
+    if(net<nisab)h+=hasil("Zakat mal","Belum wajib","Harta bersih belum mencapai nisab.");
+    else if(!haul)h+=hasil("Zakat mal","Belum wajib","Harta sudah mencapai nisab, tetapi baru wajib dizakati setelah dimiliki penuh satu tahun hijriah (haul).");
+    else h+=hasil("Zakat mal yang dikeluarkan (2,5%)",zRp(net*0.025),"2,5% dari harta bersih.");
+  }else if(zm==="gaji"){
+    const bln=zNv("zGaji")+zNv("zLain"),nb=zNv("zNisabG");
+    h=baris("Penghasilan per bulan",zRp(bln))+baris("Nisab per bulan",zRp(nb));
+    if(!bln)h+='<div class="info">Isi penghasilanmu untuk mulai menghitung.</div>';
+    else if(bln<nb)h+=hasil("Zakat penghasilan","Belum wajib","Penghasilan per bulan belum mencapai nisab.");
+    else h+=hasil("Zakat penghasilan per bulan (2,5%)",zRp(bln*0.025),"Sekitar "+zRp(bln*0.025*12)+" per tahun. Dihitung dari penghasilan kotor sebagaimana acuan BAZNAS; sebagian ulama membolehkan mengurangi kebutuhan pokok.");
+  }else{
+    const j=zNv("zJiwa"),b=zNv("zBeras");
+    h=baris("Jumlah jiwa",j)+baris("Beras per jiwa","2,5 kg (3,5 liter)")+baris("Total beras",(j*2.5).toLocaleString("id-ID")+" kg");
+    if(j&&b)h+=hasil("Zakat fitrah dalam uang",zRp(j*2.5*b),"2,5 kg × harga beras × jumlah jiwa. Besaran resmi bisa berbeda tiap daerah, tanyakan ke BAZNAS atau amil setempat.");
+    else h+='<div class="info">Isi jumlah jiwa dan harga beras untuk menghitung nilai dalam uang.</div>';
+  }
+  box.innerHTML=h;
+}
+document.getElementById("zTab").onclick=e=>{
+  const b=e.target.closest("button");if(!b)return;
+  zm=b.dataset.m;
+  document.querySelectorAll("#zTab button").forEach(x=>x.classList.toggle("on",x===b));
+  hitungZakat();
+};
+document.getElementById("y").addEventListener("input",hitungZakat);
+document.getElementById("y").addEventListener("change",hitungZakat);
+hitungZakat();
 
 if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
