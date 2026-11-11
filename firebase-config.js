@@ -1,9 +1,7 @@
-// Isi dengan data dari Firebase: Project settings > General > Your apps > Web app.
-// Data ini memang boleh publik. Yang melindungi database adalah aturan (rules) di Firebase.
 window.FIREBASE_CONFIG={
-  apiKey:"ISI_API_KEY",
-  authDomain:"ISI_PROJECT_ID.firebaseapp.com",
-  databaseURL:"ISI_DATABASE_URL",
-  projectId:"ISI_PROJECT_ID",
-  appId:"ISI_APP_ID"
+  apiKey:"AIzaSyAyyffjcRbYUWPBKfhGby-78cEZWNLDUFU",
+  authDomain:"muslim-hub-c687e.firebaseapp.com",
+  databaseURL:"https://muslim-hub-c687e-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:"muslim-hub-c687e",
+  appId:"1:978783005557:web:ae5ca1669d38e7dc25013c"
 };
